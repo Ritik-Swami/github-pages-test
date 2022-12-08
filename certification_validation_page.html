@@ -9,47 +9,31 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Hello, world!</h1>
+    <div class="container shadow mt-5 mx-auto text-center py-5 bg-light">
+        <h1 id="user_name"></h1>
+    </div>
     <!-- <script src="users_db.js"></script> -->
     <script type="text/javascript">
-        const url = "users_db.json";
-
-        // $.ajax({
-        //     dataType: "json",
-        //     url: url,
-        //     data: data,
-        //     success: function (response) {
-        //         console.log(response);
-        //     }
-        // });
-        fetch(url)
-        .then(response => response.json())
-        .then(data => {
-        // Use the data in your application
-        console.log(data);
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
         });
-        // Create a new XMLHttpRequest
 
-        // let xhr = new XMLHttpRequest();
-
-        // // Open the file and specify that it should be read as text
-        // xhr.open('GET', url, true);
-        // xhr.responseType = 'text';
-
-        // // Listen for the file to be loaded
-        // xhr.onload = function() {
-        // if (xhr.status === 200) {
-        //     // Parse the JSON data
-        //     let jsonData = JSON.parse(xhr.response);
-
-        //     // Use the data in your application
-        //     console.log(jsonData);
-        // }
-        // };
-
-        // // Send the request to load the file
-        // xhr.send();
-
+        const url = "users_db.json";
+        const user_id = params.user_id;
+        
+        // Fetch the JSON data and parse it into a JavaScript object
+        function getData(id){
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Get the element with id 1 from the "users" array
+                const user = data.find(user => user.user_id === id);
+        
+                // Print the user's name to the console
+                document.getElementById('user_name').innerHTML = user.name;
+            });
+        }
+        getData(user_id);
     </script>
 </body>
 </html>
